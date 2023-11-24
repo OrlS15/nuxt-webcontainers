@@ -23,10 +23,19 @@ webcontainer.mount({
       `,
     },
   },
+  t: {
+    directory: {
+      testone: {
+        file: {
+          contents: "testina",
+        },
+      },
+    },
+  },
 });
 
-async function execute() {
-  const commandProcess = await executeCommand(inputValue.value, data => {
+function execute() {
+  executeCommand(inputValue.value, data => {
     resultValue.value = data;
   });
 }
