@@ -1,4 +1,4 @@
-import { WebContainer, type FileSystemTree } from "@webcontainer/api";
+import { WebContainer, type FileNode } from "@webcontainer/api";
 
 let webContainer: WebContainer;
 
@@ -29,20 +29,19 @@ export function useWebContainerUtils(wc: WebContainer) {
   return { executeCommand };
 }
 
-interface WCFileSystemElement {
-  getFormatted(): FileSystemTree;
-  get fullpath(): string;
-  get name(): string;
-}
-export class WCFile implements WCFileSystemElement {
-  constructor(private _fullpath: string, private _content: string) {}
+export class WCFile {
+  private _name: string;
+  private _splittedDirs: string[];
 
-  getFormatted(): FileSystemTree {
+  constructor(private _fullpath: string, private _content: string) {
+    this._name = this._fullpath.split("/").pop()!;
+    this._splittedDirs = this._fullpath.split("/").slice(0, -1);
+  }
+
+  toNode(): FileNode {
     return {
-      [this.name]: {
-        file: {
-          contents: this._content,
-        },
+      file: {
+        contents: this._content,
       },
     };
   }
@@ -51,40 +50,11 @@ export class WCFile implements WCFileSystemElement {
     return this._fullpath;
   }
 
-  get name() {
-    let pathSplitted = this._fullpath.split("/");
-    return pathSplitted[pathSplitted.length - 1];
-  }
-}
-
-export class WCDirectory implements WCFileSystemElement {
-  constructor(private _fullpath: string, private _items: (WCDirectory | WCFile)[]) {}
-
-  getFormatted(): FileSystemTree {
-    return {
-      [this.name]: {
-        directory: this._items.reduce((acc, i) => {
-          Object.assign(acc, i.getFormatted());
-          return acc;
-        }, {} as FileSystemTree),
-      },
-    };
-  }
-
-  addElement(elem: WCDirectory | WCFile) {
-    this._items.push(elem);
-  }
-
-  get fullpath() {
-    return this._fullpath;
+  get splittedDirs() {
+    return this._splittedDirs;
   }
 
   get name() {
-    let pathSplitted = this._fullpath.split("/");
-    return pathSplitted[pathSplitted.length - 1];
-  }
-
-  get items() {
-    return this._items;
+    return this._name;
   }
 }
