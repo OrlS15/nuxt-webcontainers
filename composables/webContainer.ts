@@ -1,4 +1,4 @@
-import { WebContainer, type FileNode } from "@webcontainer/api";
+import { WebContainer } from "@webcontainer/api";
 
 let webContainer: WebContainer;
 
@@ -27,34 +27,4 @@ export function useWebContainerUtils(wc: WebContainer) {
   }
 
   return { executeCommand };
-}
-
-export class WCFile {
-  private _name: string;
-  private _splittedDirs: string[];
-
-  constructor(private _fullpath: string, private _content: string) {
-    this._name = this._fullpath.split("/").pop()!;
-    this._splittedDirs = this._fullpath.split("/").slice(0, -1);
-  }
-
-  toNode(): FileNode {
-    return {
-      file: {
-        contents: this._content,
-      },
-    };
-  }
-
-  get fullpath() {
-    return this._fullpath;
-  }
-
-  get splittedDirs() {
-    return this._splittedDirs;
-  }
-
-  get name() {
-    return this._name;
-  }
 }
