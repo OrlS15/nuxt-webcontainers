@@ -1,32 +1,42 @@
 <script setup lang="ts">
+import type { FileSystemDir } from "#imports";
+
 const props = defineProps<{
-  dir: InstanceType<typeof FileSystemDir>;
+  dir: FileSystemDir;
 }>();
 
 const [isDirOpen, toggle] = useToggle();
 </script>
 
 <template>
-  <div class="w-min my-2 text-sm">
-    <!-- dir -->
-
+  <div class="w-full ml-4 min-w-max">
     <!-- button -->
-    <UiButton
-      class="flex items-center gap-1 px-3 !py-1 h-min"
-      @click="toggle()"
-    >
+    <button class="flex w-full items-center gap-1 group" @click="toggle()">
       <Icon
         name="material-symbols:arrow-forward-ios-rounded"
-        size="18"
+        size="14"
         class="text-gray-600"
         :class="{ 'rotate-90': isDirOpen }"
       />
-      <Icon name="ic:baseline-folder" size="18" class="text-white" />
+      <Icon name="ic:baseline-folder" size="14" class="text-primary" />
       <span>{{ dir.name }}</span>
-    </UiButton>
+      <!-- create file and folder icons -->
+      <span class="hidden ml-auto mr-8 group-hover:block">
+        <Icon
+          name="ph:file-plus"
+          size="20"
+          class="text-gray-400 hover:bg-gray-500 hover:text-white rounded-sm p-[2px]"
+        />
+        <Icon
+          name="material-symbols:create-new-folder-outline-rounded"
+          size="20"
+          class="text-gray-400 hover:bg-gray-500 hover:text-white rounded-sm p-[2px]"
+        />
+      </span>
+    </button>
     <!-- childrens -->
     <template v-if="isDirOpen">
-      <div v-for="item in props.dir.children" class="ml-4">
+      <div v-for="item in props.dir.children" class="">
         <template v-if="!(item instanceof FileSystemDir)">
           <FileSystemFile :file="item" />
         </template>

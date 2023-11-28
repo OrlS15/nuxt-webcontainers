@@ -1,11 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ["@nuxtjs/tailwindcss", "@vueuse/nuxt", "nuxt-icon"],
+  modules: ["@nuxtjs/tailwindcss", "@vueuse/nuxt", "nuxt-icon", "@pinia/nuxt"],
   runtimeConfig: {
     public: {
       GITHUB_CLIENT_ID: "",
-      GITHUB_LOGIN_URL: `https://github.com/login/oauth/authorize?client_id=${process.env.NUXT_PUBLIC_GITHUB_CLIENT_ID}`,
+      GITHUB_LOGIN_URL: `https://github.com/login/oauth/authorize?client_id=${process.env.NUXT_PUBLIC_GITHUB_CLIENT_ID}&scope=repo`,
     },
     GITHUB_CLIENT_SECRET: "",
   },

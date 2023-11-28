@@ -1,6 +1,9 @@
 <script setup lang="ts">
-const github_url = ref<string>("https://github.com/nuxt/learn.nuxt.com/");
-const branch = ref<string>("main");
+import { Splitpanes, Pane } from "splitpanes";
+import "splitpanes/dist/splitpanes.css";
+
+const github_url = ref<string>("https://github.com/mattyx97/casa-felix");
+const branch = ref<string>("master");
 
 const { data: files, execute } = await useFetch("/api/github/repo-content", {
   query: {
@@ -11,16 +14,24 @@ const { data: files, execute } = await useFetch("/api/github/repo-content", {
   immediate: false,
 });
 
-const fileSystem = computed(() => {
-  const fs = new FileSystemRoot();
-  files.value?.forEach(f => {
-    fs.addFile(f);
-  });
-  return fs;
+watch(files, newFiles => {
+  if (!newFiles) return;
+  useFileSystemStore().createFileSystem(newFiles);
+});
+
+onMounted(() => {
+  execute();
 });
 </script>
 
 <template>
-    <button type="button" @click="execute()">EXECUTE</button>
-    <FileSystem :root="fileSystem" />
+  <Splitpanes class="!h-screen">
+    <Pane size="20" class="border-2 rounded-md h-full py-2">
+      <TheFileSystem />
+    </Pane>
+    <Pane class="border rounded-md">
+      <TheEditor />
+    </Pane>
+    <Pane class="border rounded-md p-2">WC</Pane>
+  </Splitpanes>
 </template>

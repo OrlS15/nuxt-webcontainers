@@ -1,7 +1,9 @@
 <template>
   <Html class="dark">
-    <NuxtLayout>
-      <NuxtPage class="!bg-background"/>
-    </NuxtLayout>
+    <Body class="overflow-hidden">
+      <NuxtLayout>
+        <NuxtPage />
+      </NuxtLayout>
+    </Body>
   </Html>
 </template>
