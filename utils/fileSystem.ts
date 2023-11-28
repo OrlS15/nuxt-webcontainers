@@ -1,9 +1,16 @@
-import type { FileSystemTree } from "@webcontainer/api";
+import type { FileSystemTree, DirectoryNode, FileNode } from "@webcontainer/api";
 
 export class FileSystemRoot {
   private _children: (FileSystemDir | WCFile)[];
   constructor() {
     this._children = [];
+  }
+  toNode(): FileSystemTree {
+    const node: FileSystemTree = {};
+    this._children.forEach(child => {
+      node[child.name] = child.toNode();
+    });
+    return node;
   }
   get children() {
     return this._children;
@@ -26,7 +33,7 @@ export class FileSystemRoot {
       if (index === 0) {
         let childDir = this._children.find(dir => dir.name === dirName) as FileSystemDir;
         if (!childDir) {
-          childDir = new FileSystemDir(dirName);
+          childDir = new FileSystemDir(dirName, pathArr.slice(0, index + 1).join("/"));
           this._children.push(childDir);
           this.orderChildren();
         }
@@ -34,7 +41,7 @@ export class FileSystemRoot {
       } else {
         let childDir = currentDir?.children.find(dir => dir.name === dirName) as FileSystemDir;
         if (!childDir) {
-          childDir = new FileSystemDir(dirName);
+          childDir = new FileSystemDir(dirName, pathArr.slice(0, index + 1).join("/"));
           currentDir?.addChildren(childDir);
         }
         currentDir = childDir;
@@ -66,14 +73,14 @@ export class FileSystemRoot {
       if (index === 0) {
         let childDir = this._children.find(dir => dir.name === dirName) as FileSystemDir;
         if (!childDir) {
-          childDir = new FileSystemDir(dirName);
+          childDir = new FileSystemDir(dirName, pathArr.slice(0, index + 1).join("/"));
           this._children.push(childDir);
         }
         currentDir = childDir;
       } else {
         let childDir = currentDir?.children.find(dir => dir.name === dirName) as FileSystemDir;
         if (!childDir) {
-          childDir = new FileSystemDir(dirName);
+          childDir = new FileSystemDir(dirName, pathArr.slice(0, index + 1).join("/"));
           currentDir?.addChildren(childDir);
         }
         currentDir = childDir;
@@ -93,17 +100,31 @@ export class FileSystemRoot {
 }
 
 export class FileSystemDir {
+  private _fullpath: string;
   private _name: string;
   private _children: (FileSystemDir | WCFile)[];
-  constructor(name: string) {
+  constructor(name: string, fullpath: string) {
     this._name = name;
+    this._fullpath = fullpath;
     this._children = [];
+  }
+  toNode(): DirectoryNode {
+    const node: FileSystemTree = {};
+    this._children.forEach(child => {
+      node[child.name] = child.toNode();
+    });
+    return {
+      directory: node,
+    };
   }
   get name() {
     return this._name;
   }
   get children() {
     return this._children;
+  }
+  get fullpath() {
+    return this._fullpath;
   }
   addChildren(child: FileSystemDir | WCFile) {
     this._children.push(child);
@@ -127,52 +148,25 @@ export class WCFile {
   constructor(private _path: string, private _content: string) {
     this._name = this._path.split("/").pop()!;
   }
-
-  toNode() {
+  toNode(): FileNode {
     return {
       file: {
         contents: this._content,
       },
     };
   }
-
   get path() {
     return this._path;
   }
-
   get name() {
     return this._name;
   }
-
   get content() {
     return this._content;
   }
-}
-
-export function filesToWebContainerFs(files: WCFile[]) {
-  const tree: FileSystemTree = {};
-
-  for (const file of files) {
-    if (!file.path.includes("/")) {
-      tree[file.path] = file.toNode();
-    } else {
-      const parts = file.path.split("/");
-      const filename = parts.pop()!;
-      let current = tree;
-      for (const dir of parts) {
-        if (!current[dir]) {
-          current[dir] = {
-            directory: {},
-          };
-        }
-        const node = current[dir];
-        if (!("directory" in node)) throw new Error("Unexpected directory but found file");
-        current = node.directory;
-      }
-      current[filename] = file.toNode();
-    }
+  set content(content: string) {
+    this._content = content;
   }
-  return tree;
 }
 
 // test addFile

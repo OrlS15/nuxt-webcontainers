@@ -1,12 +1,13 @@
-import { FileSystemRoot, type WCFile } from "#imports";
+import { FileSystemDir, FileSystemRoot, type WCFile } from "#imports";
 
 export default defineStore("useFileSystemStore", () => {
-  const selectedFile = ref<WCFile>();
   const fileSystem = ref<FileSystemRoot>();
+  const selectedFile = ref<WCFile>();
+  const lastSelectedFolder = ref<FileSystemDir>();
 
-  function createFileSystem(files?: WCFile[]) {
+  function createFileSystem(_files?: WCFile[]) {
     const fs = new FileSystemRoot();
-    files?.forEach(f => {
+    _files?.forEach(f => {
       fs.addFile(f);
     });
     fileSystem.value = fs;
@@ -16,13 +17,14 @@ export default defineStore("useFileSystemStore", () => {
     fileSystem.value?.addFile(file);
   }
 
-  function createDir(path: string) {
-    fileSystem.value?.createDir(path);
+  function createDir(fullpath: string) {
+    fileSystem.value?.createDir(fullpath);
   }
 
   return {
     selectedFile,
     fileSystem,
+    lastSelectedFolder,
     createFileSystem,
     addFile,
     createDir,

@@ -38,12 +38,12 @@ export default defineGithubAuthEventHandler(async (event, gh_token) => {
 });
 
 const filteredFiles = [
-  "package-lock.json",
+/*   "package-lock.json",
   "yarn.lock",
   "pnpm-lock.yaml",
   "pnpm-lock.json",
+  "bun.lockb", */
   ".vscode",
-  "bun.lockb",
   ".github",
 ];
 
