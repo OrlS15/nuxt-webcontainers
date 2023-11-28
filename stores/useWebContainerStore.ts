@@ -27,21 +27,22 @@ export default defineStore("useWebContainerStore", () => {
   }
 
   async function executeCommand(cmd: string, onData?: (d: string) => void) {
-    const process = await wc.value?.spawn(cmd.split(" ")[0], cmd.slice(1).split(" "));
-    process?.output.pipeTo(
+    const process = await wc.value?.spawn(cmd.split(" ")[0], cmd.slice(1).split(" "))!;
+    process.output.pipeTo(
       new WritableStream({
         write(chunk) {
           onData?.(chunk);
         },
       })
     );
-    await process?.exit;
+    await process.exit;
   }
 
   function initWC(wc: WebContainer) {
     wc.on("server-ready", (port, url) => {
       if (port === 3000) {
         wcUrl.value = url;
+        status.value = "ready";
       }
     });
   }

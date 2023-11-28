@@ -23,6 +23,12 @@ function refresh() {
         @click="refresh()"
       />
     </div>
-    <iframe ref="iframeRef" :src="wcs.wcUrl" class="w-full h-full" />
+    <!-- iframe -->
+    <iframe v-if="wcs.status == 'ready'" ref="iframeRef" :src="wcs.wcUrl" class="w-full h-full" />
+    <!-- loaders -->
+    <div v-else class="flex items-center justify-center h-full gap-2">
+      <Icon name="svg-spinners:270-ring" size="22" />
+      <span>{{ wcs.status[0].toUpperCase() + wcs.status.slice(1) }}ing...</span>
+    </div>
   </div>
 </template>

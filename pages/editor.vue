@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { FileSystemRoot, WCFile } from "#imports";
+import { WCFile } from "#imports";
 import { Splitpanes, Pane } from "splitpanes";
 import "splitpanes/dist/splitpanes.css";
 
-const editorStore = useEditorStore();
 
 const fss = useFileSystemStore();
 const wcs = useWebContainerStore();
+const editorStore = useEditorStore();
 
 const { data: files, execute } = await useFetch("/api/github/repo-content", {
   query: {
@@ -23,6 +23,7 @@ onMounted(async () => {
     if (!newFiles) return;
     fss.createFileSystem(newFiles);
     await bootingPromise;
+
     // mount
     wcs.mount(fss.fileSystem?.toNode()!);
 
@@ -31,11 +32,7 @@ onMounted(async () => {
     await wcs.executeCommand(editorStore.states.installCommand);
 
     // start
-    wcs.status = "start";
-    await wcs.executeCommand(editorStore.states.startCommand);
-
-    // ready
-    wcs.status = "ready";
+    wcs.executeCommand(editorStore.states.startCommand);
   });
 });
 </script>
