@@ -27,7 +27,8 @@ export default defineStore("useWebContainerStore", () => {
   }
 
   async function executeCommand(cmd: string, onData?: (d: string) => void) {
-    const process = await wc.value?.spawn(cmd.split(" ")[0], cmd.slice(1).split(" "))!;
+    let cmdSplit = cmd.split(" ");
+    const process = await wc.value?.spawn(cmdSplit[0], cmdSplit.slice(1))!;
     process.output.pipeTo(
       new WritableStream({
         write(chunk) {
