@@ -16,6 +16,17 @@
 
 Nuxt WebContainers is a project designed to leverage the capabilities of [webcontainers](https://webcontainers.io/), enabling the execution of Node.js applications directly within a web browser environment. This project allows users to run public GitHub repositories or even log in to their GitHub accounts to test and execute private repositories, all without the need to download the codebase to their local machines.
 
+## Tech Stack
+
+This project utilizes a number of technologies:
+
+- **Nuxt 3:** A Vue.js framework for building universal Vue.js applications.
+- **Shade UI Vue:** A UI component library for Vue.js.
+- **GitHub API:** GitHub's API to integrate GitHub features into our project.
+- **Tailwind CSS:** A utility-first CSS framework for rapidly building custom user interfaces.
+- **WebContainers:** A technology that allows running Node.js applications directly within a web browser environment.
+- **Pinia:** State management library for Vue.js that is intuitive and devtools-friendly.
+
 ## Key Features
 
 - **Browser-based Execution:** Utilize the power of webcontainers.io to run Node.js applications directly in your web browser.
