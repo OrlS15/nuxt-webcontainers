@@ -8,6 +8,11 @@ function refresh() {
     iframeRef.value.src = wcs.wcUrl;
   }
 }
+function copy() {
+  if (wcs.wcUrl) {
+    navigator.clipboard.writeText(wcs.wcUrl);
+  }
+}
 </script>
 
 <template>
@@ -16,12 +21,20 @@ function refresh() {
     <div class="border-y px-2 py-1.5 flex items-center justify-between gap-2">
       <Icon name="material-symbols:lock-outline" size="18" class="text-white w-[10%]" />
       <span class="text-gray-500 truncate block whitespace-nowrap">{{ wcs.wcUrl }}</span>
-      <Icon
-        name="ic:round-refresh"
-        size="22"
-        class="text-white cursor-pointer w-[10%]"
-        @click="refresh()"
-      />
+      <div class="w-[20%]">
+        <Icon
+          name="ic:round-content-copy"
+          size="22"
+          class="text-white cursor-pointer"
+          @click="copy()"
+        />
+        <Icon
+          name="ic:round-refresh"
+          size="22"
+          class="text-white cursor-pointer"
+          @click="refresh()"
+        />
+      </div>
     </div>
     <!-- iframe -->
     <iframe v-if="wcs.status == 'ready'" ref="iframeRef" :src="wcs.wcUrl" class="w-full h-full" />

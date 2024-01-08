@@ -3,25 +3,27 @@ import { WCFile } from "#imports";
 import { Splitpanes, Pane } from "splitpanes";
 import "splitpanes/dist/splitpanes.css";
 
-
 const fss = useFileSystemStore();
 const wcs = useWebContainerStore();
 const editorStore = useEditorStore();
 
-const { data: files, execute } = await useFetch("/api/github/repo-content", {
+if (!editorStore.states.github_url) {
+  navigateTo("/");
+}
+
+const { data: files } = await useFetch("/api/github/repo-content", {
   query: {
     github_url: editorStore.states.github_url,
     branch: editorStore.states.github_branch,
   },
-  transform: data => data.map(file => new WCFile(file.fullpath, file.content)),
+  transform: (data) => data.map((file) => new WCFile(file.fullpath, file.content)),
   server: false,
 });
 
 onMounted(async () => {
   let bootingPromise = wcs.boot();
-  watchOnce(files, async newFiles => {
-    if (!newFiles) return;
-    fss.createFileSystem(newFiles);
+    if (!files.value) return;
+    fss.createFileSystem(files.value);
     await bootingPromise;
 
     // mount
@@ -33,7 +35,6 @@ onMounted(async () => {
 
     // start
     wcs.executeCommand(editorStore.states.startCommand);
-  });
 });
 </script>
 

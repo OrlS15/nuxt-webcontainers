@@ -1,4 +1,3 @@
-import type { FileSystemRoot, WCFile } from "#imports";
 import { WebContainer, type FileSystemTree } from "@webcontainer/api";
 
 type TStatus = "boot" | "mount" | "install" | "start" | "ready" | "stop";
@@ -7,7 +6,6 @@ export default defineStore("useWebContainerStore", () => {
   const wc = ref<WebContainer>();
   const wcUrl = ref<string>();
   const status = ref<TStatus>("stop");
-  const terminals = ref();
 
   async function boot() {
     status.value = "boot";

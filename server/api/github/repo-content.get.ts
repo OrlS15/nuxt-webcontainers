@@ -6,7 +6,7 @@ const querySchema = z.object({
   branch: z.string(),
 });
 
-export default defineGithubAuthEventHandler(async (event, gh_token) => {
+export default defineSafeGithubAuthEventHandler(async (event, gh_token) => {
   const query = await getValidatedQuery(event, querySchema.safeParse);
   if (!query.success) {
     throw createError({
@@ -20,17 +20,21 @@ export default defineGithubAuthEventHandler(async (event, gh_token) => {
   const { username, repo } = getInfoFromGithubUrl(github_url);
 
   const data = await fetch(`https://api.github.com/repos/${username}/${repo}/zipball/${branch}`, {
-    headers: {
-      Authorization: `token ${gh_token}`,
-    },
-  }).then(res => res.blob());
+    ...(gh_token
+      ? {
+          headers: {
+            Authorization: `token ${gh_token}`,
+          },
+        }
+      : {}),
+  }).then((res) => res.blob());
 
   const zip = new AdmZip(Buffer.from(await data.arrayBuffer()));
   const zipEntries = zip
     .getEntries()
-    .filter(e => !e.isDirectory && !filteredFiles.some(s => e.entryName.includes(s)));
+    .filter((e) => !e.isDirectory && !filteredFiles.some((s) => e.entryName.includes(s)));
 
-  return zipEntries.map(e => ({
+  return zipEntries.map((e) => ({
     fullpath: e.entryName.split("/").slice(1).join("/"),
     name: e.name,
     content: e.getData().toString("utf8"),
@@ -38,7 +42,7 @@ export default defineGithubAuthEventHandler(async (event, gh_token) => {
 });
 
 const filteredFiles = [
-/*   "package-lock.json",
+  /*   "package-lock.json",
   "yarn.lock",
   "pnpm-lock.yaml",
   "pnpm-lock.json",
