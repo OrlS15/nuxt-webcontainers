@@ -4,6 +4,14 @@
 
 **Note:** This project is currently in an experimental stage and is not considered complete. Feel free to explore, but be aware that features and functionality might be incomplete.
 
+- [x] Add support for public GitHub repos
+- [x] Add support for private GitHub repos
+- [ ] Replace current code editor with Monaco Editor
+- [ ] feat: moving files and dirs
+- [ ] feat: deleting files and dirs
+- [ ] feat: renaming files and dirs
+- [ ] feat: terminal
+
 ## What's This?
 
 Nuxt WebContainers is a project designed to leverage the capabilities of [webcontainers](https://webcontainers.io/), enabling the execution of Node.js applications directly within a web browser environment. This project allows users to run public GitHub repositories or even log in to their GitHub accounts to test and execute private repositories, all without the need to download the codebase to their local machines.
