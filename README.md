@@ -21,15 +21,37 @@ Nuxt WebContainers is a project designed to leverage the capabilities of [webcon
 ## How to Use
 
 1. **Clone This Repo:**
+
    ```bash
    git clone https://github.com/OrlS15/nuxt-webcontainers
    ```
+
 2. **Install Dependencies:**
    ```bash
    cd nuxt-webcontainers
    npm install
    ```
-3. **Run the App:**
+3. **Create a GitHub OAuth App:**
+
+   - Go to [GitHub Developer Settings](https://github.com/settings/developers)
+   - Click **New OAuth App**
+   - Fill in the form with the following information:
+     - **Homepage URL:** http://localhost:3000
+     - **Authorization Callback URL:** http://localhost:3000/api/github/callback
+   - Click **Register Application**
+   - Copy the **Client ID** and **Client Secret** values
+
+4. **Create a `.env` File:**
+
+   - Create a `.env` file in the root directory of the project
+   - Add the following lines to the file:
+     ```bash
+     NUXT_PUBLIC_GITHUB_CLIENT_ID=<your_client_id>
+     NUXT_GITHUB_CLIENT_SECRET=<your_client_secret>
+     ```
+   - Replace `<your_client_id>` and `<your_client_secret>` with the values you copied in the previous step
+
+5. **Run the App:**
    ```bash
     npm run dev
    ```
