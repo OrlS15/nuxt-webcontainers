@@ -1,4 +1,4 @@
-# Nuxt WebContainers Playground in Action
+# Nuxt WebContainers
 
 ## Project Status: Experimental and Incomplete
 
