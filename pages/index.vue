@@ -45,6 +45,14 @@ async function goToEditor() {
   <div
     class="w-full h-screen flex items-center justify-center flex-col gap-2 max-w-[450px] mx-auto"
   >
+    <div class="w-full border rounded-md border-gray-800 text-gray-700 p-4 text-sm">
+      <div>Public examples:</div>
+      <p class="w-full !whitespace-pre">
+        [NUXT] https://github.com/matijaoe/nuxt-starter (main)
+        <br />
+        [NEXT.JS] https://github.com/briangershon/nextjs-starter (main)
+      </p>
+    </div>
     <!-- first section -->
     <div
       class="border rounded-md relative p-4 flex items-center justify-center flex-col gap-2 w-full"
