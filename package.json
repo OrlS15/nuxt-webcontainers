@@ -12,17 +12,17 @@
   },
   "devDependencies": {
     "@nuxt/devtools": "latest",
-    "@nuxtjs/tailwindcss": "^6.10.3",
+    "@nuxtjs/tailwindcss": "^6.11.0",
     "@types/adm-zip": "^0.5.5",
     "@types/splitpanes": "^2.2.6",
-    "nuxt": "^3.9.1",
+    "nuxt": "^3.9.3",
     "typescript": "5.3.3",
-    "vue": "^3.4.5",
+    "vue": "^3.4.15",
     "vue-router": "^4.2.5"
   },
   "dependencies": {
     "@pinia/nuxt": "0.5.1",
-    "@vueuse/core": "^10.7.1",
+    "@vueuse/core": "^10.7.2",
     "@vueuse/nuxt": "10.7.1",
     "@webcontainer/api": "^1.1.8",
     "adm-zip": "0.5.10",
@@ -32,9 +32,9 @@
     "lucide-vue-next": "^0.307.0",
     "nuxt-icon": "0.6.8",
     "pinia": "2.1.7",
-    "radix-vue": "^1.2.6",
+    "radix-vue": "^1.3.2",
     "splitpanes": "3.1.5",
-    "tailwind-merge": "^2.2.0",
+    "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "zod": "3.22.4"
   }
